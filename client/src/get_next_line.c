@@ -42,7 +42,7 @@ int						get_next_line(int fd, char **line)
 	X;
 	if (!GETBUF(fd))
 		GETBUF(fd) = ft_memalloc(1);
-	while (!(br = ft_strchr(GETOFFSET(fd), '\n'))
+	while (!(br = ft_strrchr(GETOFFSET(fd), '\n'))
 		&& (ret = read(fd, buffer, BUFF_SIZE)) > 0)
 	{
 		GETREAD(fd) += ret;

@@ -27,7 +27,7 @@ success: $(NAME)
 	@echo "Project compilated."
 
 $(NAME): $(LIB_TOTAL) $(OBJ)
-	@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_TOTAL) $(OBJ)
+	$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(OBJ) $(LIB_TOTAL)
 
 $(LIB_TOTAL):
 	cd $(LIB_PATH) ; $(MAKE) -f Makefile

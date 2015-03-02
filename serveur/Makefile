@@ -5,7 +5,8 @@ LIB_NAME = libft.a
 LIB_TOTAL = $(addprefix $(LIB_PATH),$(LIB_NAME))
 
 SRC_PATH = ./src/
-SRC_NAME =	main.c
+SRC_NAME =	main.c\
+			cmd_from_client.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)
@@ -26,7 +27,7 @@ success: $(NAME)
 	@echo "Project compilated."
 
 $(NAME): $(LIB_TOTAL) $(OBJ)
-	@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_TOTAL) $(OBJ)
+	@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(OBJ) $(LIB_TOTAL)
 
 $(LIB_TOTAL):
 	cd $(LIB_PATH) ; $(MAKE) -f Makefile

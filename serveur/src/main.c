@@ -12,7 +12,7 @@
 
 #include "ft_p.h"
 
-void					usage(char *str)
+static void				usage(char *str)
 {
 	ft_putstr("Usage: ");
 	ft_putstr(str);
@@ -20,7 +20,7 @@ void					usage(char *str)
 	exit(-1);
 }
 
-int						create_server(int port)
+static int					create_server(int port)
 {
 	int					sock;
 	struct protoent		*proto;
@@ -34,37 +34,40 @@ int						create_server(int port)
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		ft_putendl("Bind error");
+		ft_putendl("Bind error. Just wait a minute or change port.");
 		exit(2);
 	}
 	listen(sock, 10);
 	return (sock);
 }
 
-void					treat_command(char *str)
-{
-	char				**input;
-
-	input = ft_strsplit(str, ' ');
-	if (ft_strequ(input[0], "ls"))
-		;
-
-}
-
-int						stay_connected(int sock)
+static void				stay_connected(int sock)
 {
 	int					cs;
 	unsigned int		cslen;
 	struct sockaddr_in	csin;
-	int					r;
-	char				buf[1024];
+	pid_t				pid;
 
-	cs = accept(sock, (struct sockaddr *)&csin, &cslen);
-	while ((r = read(cs, buf, 1023)) > 0 && buf[0] != '\n')
-		treat_command(ft_strdup(buf));
-	close(cs);
+
+	while (1)
+	{
+		cs = accept(sock, (struct sockaddr *)&csin, &cslen);
+		if ((pid = fork()) < 0)
+		{
+			write(cs, "Fork error. Closing connection.\n", 32);
+			close(cs);
+		}
+		else if (pid > 0)
+			close(cs);
+		else if (pid == 0)
+		{
+			treat_command(cs);
+			close(cs);
+			exit(0);
+		}
+		sleep(2);
+	}
 	close(sock);
-	return (1);
 }
 
 int						main(int ac, char **av)
@@ -78,5 +81,6 @@ int						main(int ac, char **av)
 	port = ft_atoi(av[1]);
 	sock = create_server(port);
 	stay_connected(sock);
+	ft_putendl("Goodbye!");
 	return (0);
 }

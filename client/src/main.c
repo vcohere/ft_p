@@ -12,7 +12,7 @@
 
 #include "ft_p.h"
 
-void					usage(char *str)
+static void				usage(char *str)
 {
 	ft_putstr("Usage: ");
 	ft_putstr(str);
@@ -20,7 +20,7 @@ void					usage(char *str)
 	exit(-1);
 }
 
-int						create_client(char *addr, int port)
+static int				create_client(char *addr, int port)
 {
 	int					sock;
 	struct protoent		*proto;
@@ -34,10 +34,55 @@ int						create_client(char *addr, int port)
 	sin.sin_addr.s_addr = inet_addr(addr);
 	if (connect(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		ft_putendl("Connection error");
-		exit(2);
+		ft_putendl("Connection error. Maybe you should start the server?");
+		exit(-1);
 	}
 	return (sock);
+}
+
+static void				send_file(char *str, int sock)
+{
+	(void)str;
+	(void)sock;
+}
+
+static void				wait_response(int sock)
+{
+	int					r;
+	char				buf[1024];
+
+	while ((r = read(sock, buf, sizeof(buf))) == 0)
+		;
+	buf[r] = '\0';
+	ft_putendl(buf);
+}
+
+static void				treat_command(char *str, int sock)
+{
+	if (ft_strnequ(str, "quit", 4))
+	{
+		ft_putendl("Goodbye!");
+		exit(0);
+	}
+	else if (ft_strnequ(str, "ls", 2) || ft_strnequ(str, "pwd", 3) ||
+		ft_strnequ(str, "get ", 4))
+		write(sock, str, ft_strlen(str));
+	else if (ft_strnequ(str, "put ", 4))
+	{
+		send_file(str + 4, sock);
+		return ;
+	}
+	else if (ft_strnequ(str, "cd ", 3))
+	{
+		write(sock, str, ft_strlen(str));
+		return ;
+	}
+	else
+	{
+		ft_putendl("Syntax error.");
+		return ;
+	}
+	wait_response(sock);
 }
 
 int						main(int ac, char **av)
@@ -51,9 +96,11 @@ int						main(int ac, char **av)
 		usage(av[0]);
 	port = ft_atoi(av[2]);
 	sock = create_client(av[1], port);
+	ft_putstr("ftp2ouf> ");
 	while (get_next_line(0, &line) > 0)
 	{
-		ft_putstr(line);
+		treat_command(line, sock);
+		ft_putstr("ftp2ouf> ");
 	}
 	close(sock);
 	return (0);

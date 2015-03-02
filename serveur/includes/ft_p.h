@@ -19,5 +19,10 @@
 # include <netdb.h>
 # include <netinet/in.h>
 # include <arpa/inet.h>
+# include <sys/types.h>
+# include <dirent.h>
+
+void					treat_command(int sock);
+void					ft_ls(int sock, char *str);
 
 #endif
