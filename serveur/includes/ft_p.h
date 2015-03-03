@@ -22,9 +22,19 @@
 # include <arpa/inet.h>
 # include <sys/types.h>
 # include <dirent.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+
+// REMOVE ME
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+// PLEASE
 
 void					treat_command(int sock);
 void					ft_ls(int sock, char *str);
 void					sig_handler(int signo);
+void					get_file(int sock, char *name);
+int						ft_strlenc(char *str, char c);
 
 #endif

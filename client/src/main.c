@@ -54,18 +54,9 @@ static void				wait_response(int sock)
 static void				treat_command(char *str, int sock)
 {
 	if (ft_strnequ(str, "ls", 2) || ft_strnequ(str, "pwd", 3) ||
-		ft_strnequ(str, "get ", 4) || ft_strnequ(str, "quit", 4))
+		ft_strnequ(str, "get ", 4) || ft_strnequ(str, "quit", 4) ||
+		ft_strnequ(str, "put ", 4) || ft_strnequ(str, "cd ", 3))
 		write(sock, str, ft_strlen(str));
-	else if (ft_strnequ(str, "put ", 4))
-	{
-		send_file(str + 4, sock);
-		return ;
-	}
-	else if (ft_strnequ(str, "cd ", 3))
-	{
-		write(sock, str, ft_strlen(str));
-		return ;
-	}
 	else
 	{
 		ft_putendl("Syntax error.");
@@ -73,7 +64,10 @@ static void				treat_command(char *str, int sock)
 	}
 	if (ft_strnequ(str, "quit", 4))
 		exit(0);
-	wait_response(sock);
+	if (ft_strnequ(str, "put ", 4))
+		send_file(str + 4, sock);
+	else
+		wait_response(sock);
 }
 
 int						main(int ac, char **av)

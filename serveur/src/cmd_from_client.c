@@ -51,6 +51,8 @@ void					treat_command(int sock)
 		getcwd(buf, sizeof(buf));
 		write(sock, buf, ft_strlen(buf));
 	}
+	else if (ft_strnequ(buf, "put", 3))
+		get_file(sock, buf + 4);
 	else if (ft_strnequ(buf, "ls", 2))
 		ft_ls(sock, ft_strtrim(buf));
 	else if (ft_strnequ(buf, "cd", 2))
@@ -62,4 +64,29 @@ void					treat_command(int sock)
 	ft_putendl("Goodbye user!");
 	close(sock);
 	exit(0);
+}
+
+void					get_file(int sock, char *name)
+{
+	int					r;
+	char				buf[512];
+	int					fd;
+	int					size;
+	int					res;
+
+	while ((r = read(sock, buf, sizeof(buf))) == 0)
+		;
+	buf[r] = '\0';
+	r = 0;
+	res = 0;
+	size = ft_atoi(buf);
+	fd = open(ft_strtrim(name), O_WRONLY | O_CREAT);
+	while ((r = recv(sock, buf, sizeof(buf), 0)) > 0 && res < size)
+	{
+		ft_putnbr(res);
+		ft_putendl("");
+		write(fd, buf, r);
+		res += r;
+	}
+	close(fd);
 }
