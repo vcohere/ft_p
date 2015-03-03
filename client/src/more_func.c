@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_p.h                                             :+:      :+:    :+:   */
+/*   more_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcohere <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/27 13:11:00 by vcohere           #+#    #+#             */
-/*   Updated: 2015/02/27 13:11:19 by vcohere          ###   ########.fr       */
+/*   Created: 2015/03/03 04:07:24 by vcohere           #+#    #+#             */
+/*   Updated: 2015/03/03 04:07:25 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_P_H
-# define FT_P_H
-# include "../../libft/includes/libft.h"
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/socket.h>
-# include <netdb.h>
-# include <netinet/in.h>
-# include <arpa/inet.h>
-# include <sys/types.h>
-# include <dirent.h>
+#include "ft_p.h"
 
-void					treat_command(int sock);
-void					ft_ls(int sock, char *str);
-void					sig_handler(int signo);
-
-#endif
+void					sig_handler(int signo)
+{
+	if (signo == SIGINT)
+		ft_putstr("\nUse \"quit\" to close connection.\nftp2ouf> ");
+}

@@ -6,7 +6,9 @@ LIB_TOTAL = $(addprefix $(LIB_PATH),$(LIB_NAME))
 
 SRC_PATH = ./src/
 SRC_NAME =	main.c\
-			get_next_line.c
+			get_next_line.c\
+			more_func.c\
+			file_transfer.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

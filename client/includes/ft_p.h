@@ -14,11 +14,17 @@
 # define FT_P_H
 # include "../../libft/includes/libft.h"
 # include "get_next_line.h"
+# include <stdio.h>
+# include <fcntl.h>
+# include <signal.h>
 # include <sys/socket.h>
 # include <netdb.h>
 # include <netinet/in.h>
 # include <arpa/inet.h>
+# include <sys/stat.h>
 
-int				get_next_line(int fd, char **line);
+int						get_next_line(int fd, char **line);
+void					sig_handler(int signo);
+void					send_file(char *str, int sock);
 
 #endif

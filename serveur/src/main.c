@@ -20,7 +20,7 @@ static void				usage(char *str)
 	exit(-1);
 }
 
-static int					create_server(int port)
+static int				create_server(int port)
 {
 	int					sock;
 	struct protoent		*proto;
@@ -48,7 +48,7 @@ static void				stay_connected(int sock)
 	struct sockaddr_in	csin;
 	pid_t				pid;
 
-
+	signal(SIGCHLD, sig_handler);
 	while (1)
 	{
 		cs = accept(sock, (struct sockaddr *)&csin, &cslen);
@@ -60,12 +60,7 @@ static void				stay_connected(int sock)
 		else if (pid > 0)
 			close(cs);
 		else if (pid == 0)
-		{
 			treat_command(cs);
-			close(cs);
-			exit(0);
-		}
-		sleep(2);
 	}
 	close(sock);
 }
@@ -74,7 +69,6 @@ int						main(int ac, char **av)
 {
 	int					port;
 	int					sock;
-
 
 	if (ac != 2)
 		usage(av[0]);
