@@ -31,10 +31,12 @@
 #include <sys/wait.h>
 // PLEASE
 
-void					treat_command(int sock);
+void					treat_command(int sock, char *pwd);
 void					ft_ls(int sock, char *str);
 void					sig_handler(int signo);
 void					get_file(int sock, char *name);
 int						ft_strlenc(char *str, char c);
+void					change_dir(char *path, char *pwd);
+void					print_pwd(int sock, char *pwd);
 
 #endif

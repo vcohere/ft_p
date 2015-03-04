@@ -29,6 +29,7 @@ void				send_file(char *str, int sock)
 	}
 	size = ft_itoa(stat.st_size);
 	write(sock, size, ft_strlen(size));
+	sleep(1);
 	while ((reat = read(fd, buf, sizeof(buf))) > 0)
 		send(sock, buf, reat, 0);
 	close(fd);

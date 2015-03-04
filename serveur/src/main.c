@@ -47,8 +47,10 @@ static void				stay_connected(int sock)
 	unsigned int		cslen;
 	struct sockaddr_in	csin;
 	pid_t				pid;
+	char				buf[512];
 
 	signal(SIGCHLD, sig_handler);
+	getcwd(buf, sizeof(buf));
 	while (1)
 	{
 		cs = accept(sock, (struct sockaddr *)&csin, &cslen);
@@ -60,7 +62,7 @@ static void				stay_connected(int sock)
 		else if (pid > 0)
 			close(cs);
 		else if (pid == 0)
-			treat_command(cs);
+			treat_command(cs, ft_strdup(buf));
 	}
 	close(sock);
 }
@@ -75,6 +77,5 @@ int						main(int ac, char **av)
 	port = ft_atoi(av[1]);
 	sock = create_server(port);
 	stay_connected(sock);
-	ft_putendl("Goodbye!");
 	return (0);
 }

@@ -66,7 +66,7 @@ static void				treat_command(char *str, int sock)
 		exit(0);
 	if (ft_strnequ(str, "put ", 4))
 		send_file(str + 4, sock);
-	else
+	else if (!(ft_strnequ(str, "cd ", 3)))
 		wait_response(sock);
 }
 
