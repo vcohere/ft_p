@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcohere <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:10:40 by vcohere           #+#    #+#             */
-/*   Updated: 2015/02/27 13:10:42 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/03/30 16:18:13 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void				wait_response(int sock)
 static void				treat_command(char *str, int sock)
 {
 	if (ft_strnequ(str, "ls", 2) || ft_strnequ(str, "pwd", 3) ||
-		ft_strnequ(str, "get ", 4) || ft_strnequ(str, "quit", 4) ||
+		ft_strnequ(str, "get ", 4) || ft_strnequ(str, "exit", 4) ||
 		ft_strnequ(str, "put ", 4) || ft_strnequ(str, "cd ", 3))
 		write(sock, str, ft_strlen(str));
 	else
@@ -62,10 +62,12 @@ static void				treat_command(char *str, int sock)
 		ft_putendl("Syntax error.");
 		return ;
 	}
-	if (ft_strnequ(str, "quit", 4))
+	if (ft_strnequ(str, "exit", 4))
 		exit(0);
 	if (ft_strnequ(str, "put ", 4))
 		send_file(str + 4, sock);
+	else if (ft_strnequ(str, "get ", 4))
+		get_file(sock, str + 4);
 	else if (!(ft_strnequ(str, "cd ", 3)))
 		wait_response(sock);
 }

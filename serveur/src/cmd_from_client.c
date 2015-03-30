@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_from_client.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcohere <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:13:10 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/03 04:13:13 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/03/30 16:25:42 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,36 +54,12 @@ void					treat_command(int sock, char *pwd)
 		ft_ls(sock, ft_strtrim(buf));
 	else if (ft_strnequ(buf, "cd", 2))
 		change_dir(buf + 3, pwd);
+	else if (ft_strnequ(buf, "get", 3))
+		send_file(buf + 4, sock);
 	else
 		write(sock, "Command not found.\n", 19);
 	if (!(ft_strnequ(buf, "quit", 4)))
 		treat_command(sock, pwd);
-	ft_putendl("Goodbye user!");
+	ft_putendl("User disconnected.");
 	close(sock);
-	exit(0);
-}
-
-void					get_file(int sock, char *name)
-{
-	int					r;
-	char				buf[512];
-	int					fd;
-	int					size;
-	int					res;
-
-	(void)size;
-	while ((r = read(sock, buf, sizeof(buf))) == 0)
-		;
-	buf[r] = '\0';
-	r = 0;
-	res = 0;
-	size = ft_atoi(buf);
-	fd = open(ft_strtrim(name), O_WRONLY | O_CREAT);
-	while ((r = recv(sock, buf, sizeof(buf), 0)) > 0)
-	{
-		write(fd, buf, r);
-		res += r;
-	}
-	write(fd, buf, r);
-	close(fd);
 }

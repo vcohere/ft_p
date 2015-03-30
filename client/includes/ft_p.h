@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_p.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcohere <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:11:00 by vcohere           #+#    #+#             */
-/*   Updated: 2015/02/27 13:11:19 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/03/30 13:44:14 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@
 int						get_next_line(int fd, char **line);
 void					sig_handler(int signo);
 void					send_file(char *str, int sock);
+void					get_file(int sock, char *name);
 
 #endif

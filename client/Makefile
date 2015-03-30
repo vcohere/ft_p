@@ -29,14 +29,14 @@ success: $(NAME)
 	@echo "Project compilated."
 
 $(NAME): $(LIB_TOTAL) $(OBJ)
-	$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(OBJ) $(LIB_TOTAL)
+	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(LIB_TOTAL) $(OBJ)
 
 $(LIB_TOTAL):
 	cd $(LIB_PATH) ; $(MAKE) -f Makefile
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
-	@$(CC) $(CFLAGS) $(LIB) $(INC) -o $@ -c $<
+	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 clean:
 	@echo "Deleted files :"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcohere <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:10:40 by vcohere           #+#    #+#             */
-/*   Updated: 2015/02/27 13:10:42 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/03/30 16:26:36 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void				stay_connected(int sock)
 	while (1)
 	{
 		cs = accept(sock, (struct sockaddr *)&csin, &cslen);
+		ft_putendl("New user connected.");
 		if ((pid = fork()) < 0)
 		{
 			write(cs, "Fork error. Closing connection.\n", 32);

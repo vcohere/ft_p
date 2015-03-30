@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/03 04:19:21 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/30 13:41:24 by vcohere          ###   ########.fr       */
+/*   Created: 2015/03/30 12:33:00 by vcohere           #+#    #+#             */
+/*   Updated: 2015/03/30 16:24:29 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ void					get_file(int sock, char *name)
 		write(fd, buf, r);
 		res += r;
 	}
+	ft_putendl("yolo");
 	close(fd);
 }
