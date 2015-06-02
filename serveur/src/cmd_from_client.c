@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:13:10 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/30 16:25:42 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/03/31 17:55:52 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void					treat_command(int sock, char *pwd)
 	char				buf[1024];
 	int					r;
 
-	while ((r = read(sock, buf, sizeof(buf))) == 0)
-		;
+	r = read(sock, buf, sizeof(buf));
 	buf[r] = '\0';
 	if (ft_strnequ(buf, "pwd", 3))
 		print_pwd(sock, pwd);
@@ -58,7 +57,7 @@ void					treat_command(int sock, char *pwd)
 		send_file(buf + 4, sock);
 	else
 		write(sock, "Command not found.\n", 19);
-	if (!(ft_strnequ(buf, "quit", 4)))
+	if (!(ft_strnequ(buf, "exit", 4)))
 		treat_command(sock, pwd);
 	ft_putendl("User disconnected.");
 	close(sock);
