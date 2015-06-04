@@ -67,15 +67,16 @@ FLAGS = -Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME): $(SRCO)
-	ar rc $@ $(SRCO)
+	@ar rc $@ $(SRCO)
 
 %.o: %.c
-	gcc -c $(FLAGS) -o $@ $^
+	@gcc -c $(FLAGS) -o $@ $^
 
 clean:
-	/bin/rm -f $(SRCO)
+	@/bin/rm -f $(SRCO)
 
 fclean: clean
-	/bin/rm -rf $(NAME)
+	@/bin/rm -rf $(NAME)
+	@echo "=== Suppression Libft ==="
 
 re: fclean all

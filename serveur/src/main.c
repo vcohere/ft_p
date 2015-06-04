@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:10:40 by vcohere           #+#    #+#             */
-/*   Updated: 2015/06/04 01:43:21 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/06/05 00:01:45 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int				create_server(int port)
 	return (sock);
 }
 
-static void				stay_connected(int sock, char **env)
+static void				stay_connected(int sock)
 {
 	int					cs;
 	unsigned int		cslen;
@@ -63,12 +63,12 @@ static void				stay_connected(int sock, char **env)
 		else if (pid > 0)
 			close(cs);
 		else if (pid == 0)
-			treat_command(cs, ft_strdup(buf), env);
+			treat_command(cs, ft_strdup(buf));
 	}
 	close(sock);
 }
 
-int						main(int ac, char **av, char **env)
+int						main(int ac, char **av)
 {
 	int					port;
 	int					sock;
@@ -77,6 +77,6 @@ int						main(int ac, char **av, char **env)
 		usage(av[0]);
 	port = ft_atoi(av[1]);
 	sock = create_server(port);
-	stay_connected(sock, env);
+	stay_connected(sock);
 	return (0);
 }

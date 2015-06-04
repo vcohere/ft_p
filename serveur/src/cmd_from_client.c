@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:13:10 by vcohere           #+#    #+#             */
-/*   Updated: 2015/06/04 01:46:46 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/06/05 00:02:21 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void					sig_handler(int signo)
 		wait4(-1, NULL, 0, NULL);
 }
 
-void					ft_ls(int sock, char *str, char **env)
+void					ft_ls(int sock, char *str)
 {
 	char				**split;
 	pid_t				pid;
@@ -33,11 +33,11 @@ void					ft_ls(int sock, char *str, char **env)
 	{
 		dup2(sock, 1);
 		dup2(sock, 2);
-		execve("/bin/ls", split, env);
+		execv("/bin/ls", split);
 	}
 }
 
-void					treat_command(int sock, char *pwd, char **env)
+void					treat_command(int sock, char *pwd)
 {
 	char				buf[1024];
 	int					r;
@@ -49,7 +49,7 @@ void					treat_command(int sock, char *pwd, char **env)
 	else if (ft_strnequ(buf, "put", 3))
 		get_file(sock, buf + 4);
 	else if (ft_strnequ(buf, "ls", 2))
-		ft_ls(sock, ft_strtrim(buf), env);
+		ft_ls(sock, ft_strtrim(buf));
 	else if (ft_strnequ(buf, "cd", 2))
 		change_dir(buf + 3, pwd);
 	else if (ft_strnequ(buf, "get", 3))
@@ -57,7 +57,7 @@ void					treat_command(int sock, char *pwd, char **env)
 	else
 		write(sock, "Command not found.\n", 19);
 	if (!(ft_strnequ(buf, "exit", 4)))
-		treat_command(sock, pwd, env);
+		treat_command(sock, pwd);
 	ft_putendl("User disconnected.");
 	exit(0);
 	close(sock);

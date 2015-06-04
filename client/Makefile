@@ -26,28 +26,27 @@ INC = $(addprefix -I,$(INC_PATH))
 all: success
 
 success: $(NAME)
-	@echo "Project compilated."
+	@echo "\nProject compilated."
 
 $(NAME): $(LIB_TOTAL) $(OBJ)
-	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(LIB_TOTAL) $(OBJ)
+	@$(CC) $(CFLAGS) $(INC) -o $(NAME) $(LIB_TOTAL) $(OBJ)
 
 $(LIB_TOTAL):
-	cd $(LIB_PATH) ; $(MAKE) -f Makefile
+	@cd $(LIB_PATH) ; $(MAKE) -f Makefile
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
 	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+	@/bin/echo -n "."
 
 clean:
-	@echo "Deleted files :"
 	@rm -fv $(OBJ)
 	@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
-	cd $(LIB_PATH) ; $(MAKE) -f Makefile clean
+	@cd $(LIB_PATH) ; $(MAKE) -f Makefile clean
 
 fclean: clean
-	@echo "Deleted files :"
 	@rm -fv $(NAME)
-	cd $(LIB_PATH) ; $(MAKE) -f Makefile fclean
+	@cd $(LIB_PATH) ; $(MAKE) -f Makefile fclean
 
 re: fclean all
 
