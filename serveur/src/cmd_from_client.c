@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:13:10 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/31 17:55:52 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/06/04 01:46:46 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,29 @@
 void					sig_handler(int signo)
 {
 	if (signo == SIGCHLD)
-		wait4(-1, NULL, WNOHANG, NULL);
+		wait4(-1, NULL, 0, NULL);
 }
 
-void					ft_ls(int sock, char *str)
+void					ft_ls(int sock, char *str, char **env)
 {
-	DIR					*dir;
-	struct dirent		*file;
 	char				**split;
-	char				*res;
+	pid_t				pid;
 
 	split = ft_strsplit(str, ' ');
-	res = ft_strdup("");
-	if (split[1])
-		dir = opendir(ft_strtrim(split[1]));
-	else
-		dir = opendir(".");
-	while ((file = readdir(dir)) != NULL)
-		res = ft_strjoin(ft_strjoin(res, file->d_name), "\n");
-	res[ft_strlen(res) - 1] = '\0';
-	write(sock, res, ft_strlen(res));
-	closedir(dir);
+	if ((pid = fork()) < 0)
+	{
+		write(sock, "Fork error. Closing connection.\n", 32);
+		close(sock);
+	}
+	else if (pid == 0)
+	{
+		dup2(sock, 1);
+		dup2(sock, 2);
+		execve("/bin/ls", split, env);
+	}
 }
 
-void					treat_command(int sock, char *pwd)
+void					treat_command(int sock, char *pwd, char **env)
 {
 	char				buf[1024];
 	int					r;
@@ -50,7 +49,7 @@ void					treat_command(int sock, char *pwd)
 	else if (ft_strnequ(buf, "put", 3))
 		get_file(sock, buf + 4);
 	else if (ft_strnequ(buf, "ls", 2))
-		ft_ls(sock, ft_strtrim(buf));
+		ft_ls(sock, ft_strtrim(buf), env);
 	else if (ft_strnequ(buf, "cd", 2))
 		change_dir(buf + 3, pwd);
 	else if (ft_strnequ(buf, "get", 3))
@@ -58,7 +57,8 @@ void					treat_command(int sock, char *pwd)
 	else
 		write(sock, "Command not found.\n", 19);
 	if (!(ft_strnequ(buf, "exit", 4)))
-		treat_command(sock, pwd);
+		treat_command(sock, pwd, env);
 	ft_putendl("User disconnected.");
+	exit(0);
 	close(sock);
 }

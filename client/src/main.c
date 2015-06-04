@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:10:40 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/30 16:18:13 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/06/04 01:57:11 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,18 @@ static void				treat_command(char *str, int sock)
 		ft_strnequ(str, "get ", 4) || ft_strnequ(str, "exit", 4) ||
 		ft_strnequ(str, "put ", 4) || ft_strnequ(str, "cd ", 3))
 		write(sock, str, ft_strlen(str));
+	else if (ft_strnequ(str, "quit", 4))
+		write(sock, "exit", 4);
 	else
 	{
 		ft_putendl("Syntax error.");
 		return ;
 	}
-	if (ft_strnequ(str, "exit", 4))
+	if (ft_strnequ(str, "exit", 4) || ft_strnequ(str, "quit", 4))
+	{
+		ft_putendl("Goodbye!");
 		exit(0);
+	}
 	if (ft_strnequ(str, "put ", 4))
 		send_file(str + 4, sock);
 	else if (ft_strnequ(str, "get ", 4))

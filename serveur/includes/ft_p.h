@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:11:00 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/30 13:43:55 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/06/03 23:17:10 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 
-void					treat_command(int sock, char *pwd);
-void					ft_ls(int sock, char *str);
+void					treat_command(int sock, char *pwd, char **env);
+void					ft_ls(int sock, char *str, char **env);
 void					sig_handler(int signo);
 void					get_file(int sock, char *name);
 void					send_file(char *str, int sock);

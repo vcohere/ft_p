@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:19:21 by vcohere           #+#    #+#             */
-/*   Updated: 2015/03/31 17:51:22 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/06/04 02:39:41 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static void				send_all(int sock, char *buf, int max)
 	i = 0;
 	while (i < max && (i = send(sock, buf, max, 0)) > 0)
 		buf += i;
-	ft_putnbr(i);
-	ft_putendl("");
 	//free(buf);
 }
 
@@ -54,14 +52,14 @@ void					get_file(int sock, char *name)
 	int					size;
 	int					res;
 
-	r = read(sock, buf, sizeof(buf));
+	r = recv(sock, buf, sizeof(buf), 0);
 	buf[r] = '\0';
 	size = ft_atoi(buf);
-	ft_strclr(buf);
+	ft_bzero(buf, 512);
 	r = 0;
 	res = 0;
-	fd = open(ft_strtrim(name), O_WRONLY | O_CREAT);
-	while ((r = recv(sock, buf, sizeof(buf), 0)) > 0 && res < size)
+	fd = open(ft_strtrim(name), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	while (res < size && (r = recv(sock, buf, sizeof(buf), 0)) > 0)
 	{
 		write(fd, buf, r);
 		res += r;
