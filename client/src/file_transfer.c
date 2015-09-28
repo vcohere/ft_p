@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:19:21 by vcohere           #+#    #+#             */
-/*   Updated: 2015/06/05 00:27:19 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/09/28 15:46:19 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void				send_all(int sock, char *buf, int max)
 	i = 0;
 	while (i < max && (i = send(sock, buf, max, 0)) > 0)
 		buf += i;
-	free(buf);
 }
 
 void					send_file(char *str, int sock)
@@ -34,13 +33,16 @@ void					send_file(char *str, int sock)
 		return ;
 	if ((fd = open(ft_strtrim(str), O_RDONLY)) == -1 || fstat(fd, &stat) == -1)
 	{
-		ft_putendl("File not found.");
+		ft_putcolor("File not found.\n", "red");
+		write(sock, "File not found.", 15);
+		close(fd);
 		return ;
 	}
 	size = ft_itoa(stat.st_size);
 	send_all(sock, size, ft_strlen(size));
 	while ((reat = read(fd, buf, sizeof(buf))) > 0)
-		send_all(sock, ft_strdup(buf), reat);
+		send_all(sock, buf, reat);
+	ft_putcolor("Success !\n", "green");
 	close(fd);
 }
 
@@ -54,16 +56,20 @@ void					get_file(int sock, char *name)
 
 	r = recv(sock, buf, sizeof(buf), 0);
 	buf[r] = '\0';
+	if (ft_strequ("File not found.", buf))
+	{
+		ft_putcolor("File not found.\n", "red");
+		return ;
+	}
 	size = ft_atoi(buf);
-	ft_bzero(buf, 512);
-	r = 0;
+	ft_bzero(buf, sizeof(buf));
 	res = 0;
-	name = ft_strtrim(name);
 	fd = open(name, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	while (res < size && (r = recv(sock, buf, sizeof(buf), 0)) > 0)
 	{
 		write(fd, buf, r);
 		res += r;
 	}
+	ft_putcolor("Success !\n", "green");
 	close(fd);
 }

@@ -25,6 +25,8 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 
+typedef struct stat		t_stat;
+
 void					treat_command(int sock, char *pwd);
 void					ft_ls(int sock, char *str);
 void					sig_handler(int signo);

@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:07:24 by vcohere           #+#    #+#             */
-/*   Updated: 2015/06/05 00:23:49 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/09/28 15:39:01 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void					sig_handler(int signo)
 {
 	if (signo == SIGINT)
-		ft_putstr("\nUse \"exit\" to close connection.\nftp2ouf> ");
+	{
+		ft_putstr("\nUse \"exit\" to close connection.\n");
+		ft_putcolor("ftp2ouf> ", "green");
+	}
 }
 
 void					ft_putcolor(char *str, char *color)

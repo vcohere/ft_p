@@ -19,7 +19,6 @@ static void				send_all(int sock, char *buf, int max)
 	i = 0;
 	while (i < max && (i = send(sock, buf, max, 0)) > 0)
 		buf += i;
-	free(buf);
 }
 
 void					send_file(char *str, int sock)
@@ -34,13 +33,13 @@ void					send_file(char *str, int sock)
 		return ;
 	if ((fd = open(ft_strtrim(str), O_RDONLY)) == -1 || fstat(fd, &stat) == -1)
 	{
-		write(sock, "File not found.\n", 16);
+		write(sock, "File not found.", 16);
 		return ;
 	}
 	size = ft_itoa(stat.st_size);
 	send_all(sock, size, ft_strlen(size));
 	while ((reat = read(fd, buf, sizeof(buf))) > 0)
-		send_all(sock, ft_strdup(buf), reat);
+		send_all(sock, buf, reat);
 	close(fd);
 }
 
@@ -54,6 +53,8 @@ void					get_file(int sock, char *name)
 
 	r = recv(sock, buf, sizeof(buf), 0);
 	buf[r] = '\0';
+	if (ft_strequ("File not found.", buf))
+		return ;
 	size = ft_atoi(buf);
 	ft_bzero(buf, 512);
 	r = 0;
