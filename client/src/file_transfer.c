@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:19:21 by vcohere           #+#    #+#             */
-/*   Updated: 2015/09/28 15:46:19 by vcohere          ###   ########.fr       */
+/*   Updated: 2015/09/30 11:17:43 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void					get_file(int sock, char *name)
 	size = ft_atoi(buf);
 	ft_bzero(buf, sizeof(buf));
 	res = 0;
+	r = 0;
 	fd = open(name, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	while (res < size && (r = recv(sock, buf, sizeof(buf), 0)) > 0)
 	{
