@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/30 12:33:00 by vcohere           #+#    #+#             */
-/*   Updated: 2015/06/05 00:43:50 by vcohere          ###   ########.fr       */
+/*   Updated: 2016/02/17 18:26:03 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void					send_file(char *str, int sock)
 	t_stat				stat;
 	char				*size;
 	int					reat;
+	int					total_REMOVEME;
 	char				buf[512];
 
 	if (!str)
@@ -34,12 +35,22 @@ void					send_file(char *str, int sock)
 	if ((fd = open(ft_strtrim(str), O_RDONLY)) == -1 || fstat(fd, &stat) == -1)
 	{
 		write(sock, "File not found.", 16);
+		close(fd);
 		return ;
 	}
+	total_REMOVEME = 0;
 	size = ft_itoa(stat.st_size);
 	send_all(sock, size, ft_strlen(size));
 	while ((reat = read(fd, buf, sizeof(buf))) > 0)
+	{
+		total_REMOVEME += reat;
 		send_all(sock, buf, reat);
+		ft_putnbr(total_REMOVEME);
+		ft_putstr("    ");
+		ft_putnbr(reat);
+		ft_putendl("");
+	}
+	ft_putendl("");
 	close(fd);
 }
 
