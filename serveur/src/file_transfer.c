@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/30 12:33:00 by vcohere           #+#    #+#             */
-/*   Updated: 2016/02/17 18:26:03 by vcohere          ###   ########.fr       */
+/*   Updated: 2016/02/18 20:13:02 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@ static void				send_all(int sock, char *buf, int max)
 
 	i = 0;
 	while (i < max && (i = send(sock, buf, max, 0)) > 0)
-		buf += i;
+	{
+		ft_putnbr(i);
+		ft_putendl("");
+		if (i > -1)
+			buf += i;
+	}
 }
 
 void					send_file(char *str, int sock)
@@ -27,7 +32,6 @@ void					send_file(char *str, int sock)
 	t_stat				stat;
 	char				*size;
 	int					reat;
-	int					total_REMOVEME;
 	char				buf[512];
 
 	if (!str)
@@ -38,19 +42,14 @@ void					send_file(char *str, int sock)
 		close(fd);
 		return ;
 	}
-	total_REMOVEME = 0;
 	size = ft_itoa(stat.st_size);
 	send_all(sock, size, ft_strlen(size));
 	while ((reat = read(fd, buf, sizeof(buf))) > 0)
 	{
-		total_REMOVEME += reat;
+		ft_putnbr(ft_strlen(buf));
+		ft_putstr("   ");
 		send_all(sock, buf, reat);
-		ft_putnbr(total_REMOVEME);
-		ft_putstr("    ");
-		ft_putnbr(reat);
-		ft_putendl("");
 	}
-	ft_putendl("");
 	close(fd);
 }
 

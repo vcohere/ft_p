@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 13:11:00 by vcohere           #+#    #+#             */
-/*   Updated: 2015/06/05 00:27:33 by vcohere          ###   ########.fr       */
+/*   Updated: 2016/02/18 19:50:57 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ void					sig_handler(int signo);
 void					send_file(char *str, int sock);
 void					get_file(int sock, char *name);
 void					ft_putcolor(char *str, char *color);
+void					usage(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vcohere <vcohere@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/03 04:07:24 by vcohere           #+#    #+#             */
-/*   Updated: 2016/02/17 17:52:43 by vcohere          ###   ########.fr       */
+/*   Updated: 2016/02/18 19:51:04 by vcohere          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,12 @@ void					ft_putcolor(char *str, char *color)
 		ft_putstr(ANSI_COLOR_CYAN);
 	ft_putstr(str);
 	ft_putstr(ANSI_COLOR_RESET);
+}
+
+void				usage(char *str)
+{
+	ft_putstr("Usage: ");
+	ft_putstr(str);
+	ft_putendl(" <address> <port>");
+	exit(-1);
 }
